@@ -1,7 +1,8 @@
-import styles from './CurrencyConverter.module.css';
+import React, { useState, useEffect } from 'react';
+import styles from './currency-converter.module.css';
+import { getCurrencies } from '../utils';
 
-import React, {useState, useEffect} from 'react';
-import {getCurrencies} from '../utils';
+import Modal from './modal/modal';
 
 const currencies = getCurrencies();
 
@@ -11,6 +12,9 @@ const CurrencyConverter = () => {
 
   const [fromCurrency, setFromCurrency] = useState('USD');
   const [toCurrency, setToCurrency] = useState('USD');
+
+  const [loading, setLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const handleAmountChange = (e) => {
     setAmount(e.target.value);
@@ -24,31 +28,35 @@ const CurrencyConverter = () => {
     setToCurrency(e.target.value);
   };
 
-  const convertCurrency = (e) => {
-    e.preventDefault();
-
-    console.log('Convert request');
-  };
-
   useEffect(() => {
     const fromRate = currencies.find(c => c.currency === fromCurrency)?.price;
     const toRate = currencies.find(c => c.currency === toCurrency)?.price;
 
-    if (!fromRate || !toRate) {
-      return;
+    if (fromRate && toRate) {
+      const amountInUSD = amount * fromRate;
+      const result = amountInUSD / toRate;
+      setConvertedAmount(result);
     }
-
-    const amountInUSD = amount * fromRate;
-    const result = amountInUSD / toRate;
-
-    console.log(result);
-    setConvertedAmount(result);
   }, [amount, fromCurrency, toCurrency]);
+
+  const convertCurrency = (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    // API request
+    setTimeout(() => {
+      setLoading(false);
+      setShowModal(true);
+    }, 2000);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
 
   return (
     <div className={styles['card']}>
-
-      <form onSubmit={(e) => convertCurrency(e)}>
+      <form onSubmit={convertCurrency}>
         <div>
           <label>
             Amount:
@@ -87,16 +95,24 @@ const CurrencyConverter = () => {
         </div>
 
         <div>
-          {
-            convertedAmount ? (
-              <span>You will receive: {convertedAmount} {toCurrency}</span>
-            ) : null
-          }
+          {convertedAmount > 0 && (<span>You will receive: {convertedAmount.toFixed(2)} {toCurrency}</span>)}
         </div>
 
-        <button type="submit">Convert</button>
+        <button type="submit" disabled={loading}>
+          {loading ? 'Converting...' : 'Convert'}
+        </button>
+
+        {loading && (
+          <div className={styles.spinner}>
+            {/* Replace with your spinner component or animation */}
+            <span>Loading...</span>
+          </div>
+        )}
       </form>
 
+      {showModal && (
+        <Modal onClose={closeModal} />
+      )}
     </div>
   );
 };
