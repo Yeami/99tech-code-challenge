@@ -5,6 +5,7 @@ import CurrencyConverter from '../components/CurrencyConverter';
 function App() {
   return (
     <div className="App">
+      <img src={logo} alt="Logo" />
       <CurrencyConverter/>
       {/*<header className="App-header">*/}
         {/*<img src={logo} className="App-logo" alt="logo" />*/}
