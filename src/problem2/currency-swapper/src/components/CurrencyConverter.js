@@ -1,56 +1,70 @@
-import React, { useState, useEffect } from 'react';
+import styles from './CurrencyConverter.module.css';
+
+import React, {useState, useEffect} from 'react';
 import {getCurrencies} from '../utils';
 
-// Helper function to create a rate lookup from the currency data
-const createExchangeRates = (data) => {
-  const rates = {};
-  data.forEach((item) => {
-    rates[item.currency] = 1 / item.price;
-  });
-  return rates;
-};
-
-const currencyData = getCurrencies();
-const exchangeRates = createExchangeRates(currencyData);
+const currencies = getCurrencies();
 
 const CurrencyConverter = () => {
-  const [amountToSend, setAmountToSend] = useState(null);
-  const [amountToReceive, setAmountToReceive] = useState(null);
+  const [amount, setAmount] = useState(0);
+  const [convertedAmount, setConvertedAmount] = useState(0);
+
   const [fromCurrency, setFromCurrency] = useState('USD');
   const [toCurrency, setToCurrency] = useState('USD');
 
-  useEffect(() => {
-    if (amountToSend && fromCurrency && toCurrency) {
-      const fromRate = exchangeRates[fromCurrency] || 1;
-      const toRate = exchangeRates[toCurrency] || 1;
+  const handleAmountChange = (e) => {
+    setAmount(e.target.value);
+  };
 
-      setAmountToReceive(((amountToSend * fromRate) / toRate));
-    } else {
-      setAmountToReceive(null);
+  const handleFromCurrencyChange = (e) => {
+    setFromCurrency(e.target.value);
+  };
+
+  const handleToCurrencyChange = (e) => {
+    setToCurrency(e.target.value);
+  };
+
+  const convertCurrency = (e) => {
+    e.preventDefault();
+
+    console.log('Convert request');
+  };
+
+  useEffect(() => {
+    const fromRate = currencies.find(c => c.currency === fromCurrency)?.price;
+    const toRate = currencies.find(c => c.currency === toCurrency)?.price;
+
+    if (!fromRate || !toRate) {
+      return;
     }
-  }, [amountToSend, fromCurrency, toCurrency]);
+
+    const amountInUSD = amount * fromRate;
+    const result = amountInUSD / toRate;
+
+    console.log(result);
+    setConvertedAmount(result);
+  }, [amount, fromCurrency, toCurrency]);
 
   return (
-    <div>
-      <h1>Currency Converter</h1>
+    <div className={styles['card']}>
 
-      <form>
+      <form onSubmit={(e) => convertCurrency(e)}>
         <div>
           <label>
-            Amount to Send:
+            Amount:
             <input
               type="number"
-              value={amountToSend}
-              onChange={(e) => setAmountToSend(e.target.value)}
+              value={amount}
+              onChange={handleAmountChange}
             />
           </label>
         </div>
 
         <div>
           <label>
-            From Currency:
-            <select value={fromCurrency} onChange={(e) => setFromCurrency(e.target.value)}>
-              {currencyData.map((currency) => (
+            From:
+            <select value={fromCurrency} onChange={handleFromCurrencyChange}>
+              {currencies.map(currency => (
                 <option key={currency.currency} value={currency.currency}>
                   {currency.currency}
                 </option>
@@ -61,11 +75,11 @@ const CurrencyConverter = () => {
 
         <div>
           <label>
-            To Currency:
-            <select value={toCurrency} onChange={(e) => setToCurrency(e.target.value)}>
-              {currencyData.map((currency) => (
+            To:
+            <select value={toCurrency} onChange={handleToCurrencyChange}>
+              {currencies.map(currency => (
                 <option key={currency.currency} value={currency.currency}>
-                  {currency.currency} — {currency.price}
+                  {currency.currency}
                 </option>
               ))}
             </select>
@@ -73,16 +87,14 @@ const CurrencyConverter = () => {
         </div>
 
         <div>
-          <label>
-            Amount to Receive:
-            <input
-              type="text"
-              value={amountToReceive}
-              readOnly
-            />
-          </label>
+          {
+            convertedAmount ? (
+              <span>You will receive: {convertedAmount} {toCurrency}</span>
+            ) : null
+          }
         </div>
 
+        <button type="submit">Convert</button>
       </form>
 
     </div>
