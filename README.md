@@ -1,10 +1,6 @@
 # 99Tech Code Challenge #1 #
 
-Note that if you fork this repository, your responses may be publicly linked to this repo.  
-Please submit your application along with the solutions attached or linked.   
-
-It is important that you minimally attempt the problems, even if you do not arrive at a working solution.
-
-## Submission ##
-You can either provide a link to an online repository, attach the solution in your application, or whichever method you prefer.
-We're cool as long as we can view your solution without any pain.
+## Tasks ##
+1. Four simple functions are inside the `problem1/index.ts` file
+2. React application created via Create-React-App (JavaScript + SCSS). There are no extra dependencies. Links for the deployed version of the website and Figma prototypes are inside `problem2/README.md`. The project directory is `problem2/currency-swapper`
+3. Refactored code file with comments located in `problem3/WalletPage.tsx` 
