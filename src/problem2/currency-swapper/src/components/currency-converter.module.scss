@@ -16,13 +16,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    //position: relative;
+    position: relative;
 
-    gap: 2rem;
+    gap: 4rem;
 
     .swap-icon {
-      //position: absolute;
+      position: absolute;
       width: 1.5rem;
+      top: 1.75rem;
     }
   }
 
