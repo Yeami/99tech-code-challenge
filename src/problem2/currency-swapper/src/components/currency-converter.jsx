@@ -6,6 +6,7 @@ import Modal from './modal/modal';
 import Dropdown from './dropdown/dropdown';
 
 import swapIcon from '../assets/swap.svg';
+import spinnerIcon from '../assets/spinner.svg';
 
 const currencies = getCurrencies();
 
@@ -94,14 +95,11 @@ const CurrencyConverter = () => {
         </section>
 
         <button type="submit" disabled={loading}>
-          {loading ? 'Converting...' : 'Convert'}
+          {loading ? <div className={styles['spinner']}>
+            <span>Converting...</span>
+            <img src={spinnerIcon} alt={'Spinner Icon'}/>
+          </div> : 'Convert'}
         </button>
-
-        {loading && (
-          <div className={styles['spinner']}>
-            <span>Loading...</span>
-          </div>
-        )}
       </form>
 
       {showModal && (

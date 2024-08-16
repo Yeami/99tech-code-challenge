@@ -27,6 +27,29 @@
     }
   }
 
+  .spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+
+    img {
+      width: 1.5rem;
+      height: 1.5rem;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  }
+
+
   button {
     width: 16rem;
     height: 2.5rem;
