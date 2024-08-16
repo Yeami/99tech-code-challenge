@@ -12,7 +12,7 @@ import spinnerIcon from '../assets/spinner.svg';
 const currencies = getCurrencies();
 
 const CurrencyConverter = () => {
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState('');
   const [convertedAmount, setConvertedAmount] = useState(0);
 
   const [fromCurrency, setFromCurrency] = useState('USD');
@@ -52,10 +52,12 @@ const CurrencyConverter = () => {
     const fromRate = currencies.find(c => c.currency === fromCurrency)?.price;
     const toRate = currencies.find(c => c.currency === toCurrency)?.price;
 
-    if (fromRate && toRate) {
-      const amountInUSD = amount * fromRate;
+    if (fromRate && toRate && amount !== '') {
+      const amountInUSD = parseFloat(amount) * fromRate;
       const result = amountInUSD / toRate;
       setConvertedAmount(result);
+    } else {
+      setConvertedAmount(0);
     }
   }, [amount, fromCurrency, toCurrency]);
 

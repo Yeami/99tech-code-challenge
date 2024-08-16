@@ -7,6 +7,7 @@ const Input = ({ amount, onAmountChange }) => {
       <span>Amount you want to exchange</span>
       <input
         type="number"
+        placeholder="1000"
         value={amount}
         onChange={onAmountChange}
       />
