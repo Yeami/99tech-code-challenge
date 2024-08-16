@@ -1,9 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './currency-converter.module.scss';
-import {getCurrencies} from '../utils';
+import { getCurrencies } from '../utils';
 
 import Modal from './modal/modal';
 import Dropdown from './dropdown/dropdown';
+import Input from './input/input';
 
 import swapIcon from '../assets/swap.svg';
 import spinnerIcon from '../assets/spinner.svg';
@@ -61,18 +62,14 @@ const CurrencyConverter = () => {
   return (
     <div className={styles['card']}>
       <form onSubmit={convertCurrency}>
-        <section className={styles['input-block']}>
-          <label>
-            Amount:
-            <input
-              type="number"
-              value={amount}
-              onChange={handleAmountChange}
-            />
-          </label>
+        <section>
+          <Input
+            amount={amount}
+            onAmountChange={handleAmountChange}
+          />
         </section>
 
-        <section className={styles['swap-block']}>
+        <section className={styles['converter']}>
           <Dropdown
             label="From:"
             value={fromCurrency}
@@ -80,7 +77,7 @@ const CurrencyConverter = () => {
             onChange={handleFromCurrencyChange}
           />
 
-          <img src={swapIcon} className={styles['swap-icon']} alt="Swap Icon"/>
+          <img src={swapIcon} className={styles['swap-icon']} alt="Swap Icon" />
 
           <Dropdown
             label="To:"
@@ -90,20 +87,22 @@ const CurrencyConverter = () => {
           />
         </section>
 
-        <section className={styles['result-block']}>
-          <span>You will receive: {convertedAmount ? convertedAmount : '...'} {toCurrency}</span>
+        <section className={styles['result']}>
+          <span>You will receive: <strong>{convertedAmount ? convertedAmount : '...'}</strong> «{toCurrency}»</span>
         </section>
 
         <button type="submit" disabled={loading}>
-          {loading ? <div className={styles['spinner']}>
-            <span>Converting...</span>
-            <img src={spinnerIcon} alt={'Spinner Icon'}/>
-          </div> : 'Convert'}
+          {loading ? (
+            <div className={styles['spinner']}>
+              <span>Converting...</span>
+              <img src={spinnerIcon} alt="Spinner Icon" />
+            </div>
+          ) : 'Convert'}
         </button>
       </form>
 
       {showModal && (
-        <Modal onClose={closeModal}/>
+        <Modal onClose={closeModal} />
       )}
     </div>
   );
