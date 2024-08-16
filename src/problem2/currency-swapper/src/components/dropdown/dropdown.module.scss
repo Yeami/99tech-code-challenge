@@ -61,7 +61,7 @@
     box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 
     list-style-type: none;
-    background-color: #fbfbfb;
+    background-color: $dropdown-options;
     overflow-y: auto;
     z-index: 1000;
 
@@ -89,12 +89,12 @@
     }
 
     .dropdown-option:hover {
-      background-color: #f1f1f1;
+      background-color: $dropdown-hover;
     }
   }
 
   .dropdown-options::-webkit-scrollbar {
-    width: 4px;
+    width: 0.25rem;
   }
 
   .dropdown-options::-webkit-scrollbar-track {
@@ -103,6 +103,6 @@
 
   .dropdown-options::-webkit-scrollbar-thumb {
     background-color: darkgrey;
-    border-radius: 4px;
+    border-radius: 0.25rem;
   }
 }
