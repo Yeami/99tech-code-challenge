@@ -20,7 +20,9 @@ const CurrencyConverter = () => {
 
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [inputError, setInputError] = useState(''); // New state for error message
+
+  const [inputError, setInputError] = useState('');
+  const [dropdownError, setDropdownError] = useState('');
 
   const handleAmountChange = (e) => {
     if (inputError) {
@@ -31,10 +33,18 @@ const CurrencyConverter = () => {
   };
 
   const handleFromCurrencyChange = (currency: string) => {
+    if (dropdownError) {
+      setDropdownError('');
+    }
+
     setFromCurrency(currency);
   };
 
   const handleToCurrencyChange = (currency: string) => {
+    if (dropdownError) {
+      setDropdownError('');
+    }
+
     setToCurrency(currency);
   };
 
@@ -53,7 +63,12 @@ const CurrencyConverter = () => {
     e.preventDefault();
 
     if (amount <= 0) {
-      setInputError('Please enter a valid amount greater than 0.');
+      setInputError('Please enter a valid amount greater than 0');
+      return;
+    }
+
+    if (fromCurrency === toCurrency) {
+      setDropdownError('Please select different currencies for conversion');
       return;
     }
 
@@ -102,6 +117,11 @@ const CurrencyConverter = () => {
             onChange={handleToCurrencyChange}
           />
         </section>
+        {dropdownError && (
+          <div className={styles['error']}>
+            <span>{dropdownError}</span>
+          </div>
+        )}
 
         <section className={styles['result']}>
           <span>You will receive: <strong>{convertedAmount ? convertedAmount : '...'}</strong> «{toCurrency}»</span>
