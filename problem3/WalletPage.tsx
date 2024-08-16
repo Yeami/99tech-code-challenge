@@ -26,7 +26,7 @@ const blockchainPriority: Record<Blockchain, number> = {
   [Blockchain.Neo]: 20,
 };
 
-const WalletPage: React.FC<Props> = (props: Props) => {
+const WalletPage = (props: Props) => {
   // Remove 'children' prop because it was not used
   // Replace the '...rest' props with specific props, because it will make code more readable and understandable
   const { className, style } = props;
