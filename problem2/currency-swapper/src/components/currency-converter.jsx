@@ -20,8 +20,13 @@ const CurrencyConverter = () => {
 
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [inputError, setInputError] = useState(''); // New state for error message
 
   const handleAmountChange = (e) => {
+    if (inputError) {
+      setInputError('');
+    }
+
     setAmount(e.target.value);
   };
 
@@ -46,6 +51,12 @@ const CurrencyConverter = () => {
 
   const convertCurrency = (e) => {
     e.preventDefault();
+
+    if (amount <= 0) {
+      setInputError('Please enter a valid amount greater than 0.');
+      return;
+    }
+
     setLoading(true);
 
     // API request
@@ -67,6 +78,11 @@ const CurrencyConverter = () => {
             amount={amount}
             onAmountChange={handleAmountChange}
           />
+          {inputError && (
+            <div className={styles['error']}>
+              <span>{inputError}</span>
+            </div>
+          )}
         </section>
 
         <section className={styles['converter']}>
@@ -77,7 +93,7 @@ const CurrencyConverter = () => {
             onChange={handleFromCurrencyChange}
           />
 
-          <img src={swapIcon} className={styles['swap-icon']} alt="Swap Icon" />
+          <img src={swapIcon} className={styles['swap-icon']} alt="Swap Icon"/>
 
           <Dropdown
             label="To:"
@@ -95,14 +111,14 @@ const CurrencyConverter = () => {
           {loading ? (
             <div className={styles['spinner']}>
               <span>Converting...</span>
-              <img src={spinnerIcon} alt="Spinner Icon" />
+              <img src={spinnerIcon} alt="Spinner Icon"/>
             </div>
           ) : 'Convert'}
         </button>
       </form>
 
       {showModal && (
-        <Modal onClose={closeModal} />
+        <Modal onClose={closeModal}/>
       )}
     </div>
   );
