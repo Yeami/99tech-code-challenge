@@ -1,0 +1,31 @@
+@import '../../assets/colors';
+
+.input-block {
+  span {
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: $gray;
+  }
+
+  input {
+    font-size: 1rem;
+    font-weight: 400;
+
+    height: 2.5rem;
+    width: 100%;
+
+    background-color: $white;
+    color: $black;
+
+    margin-top: 0.25rem;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid $gray;
+    box-sizing: border-box;
+
+    &:focus {
+      border-color: $primary;
+      outline: none;
+    }
+  }
+}
