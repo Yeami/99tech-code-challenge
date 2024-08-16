@@ -1,0 +1,43 @@
+.card {
+  width: 24rem;
+  padding: 2rem 4rem;
+  border-radius: 2rem;
+
+  background-color: #ffffff;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .swap-block {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    //position: relative;
+
+    gap: 2rem;
+
+    .swap-icon {
+      //position: absolute;
+      width: 1.5rem;
+    }
+  }
+
+  button {
+    width: 16rem;
+    height: 2.5rem;
+    border-radius: 0.5rem;
+
+    border: none;
+    cursor: pointer;
+
+    font-size: 1rem;
+    font-weight: 400;
+
+    color: #ffffff;
+    background-color: #0b57d0;
+  }
+}
