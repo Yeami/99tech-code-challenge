@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import styles from './currency-converter.module.css';
-import { getCurrencies } from '../utils';
+import React, {useState, useEffect} from 'react';
+import styles from './currency-converter.module.scss';
+import {getCurrencies} from '../utils';
 
 import Modal from './modal/modal';
+import Dropdown from './dropdown/dropdown';
+
+import swapIcon from '../assets/swap.svg';
 
 const currencies = getCurrencies();
 
@@ -20,12 +23,12 @@ const CurrencyConverter = () => {
     setAmount(e.target.value);
   };
 
-  const handleFromCurrencyChange = (e) => {
-    setFromCurrency(e.target.value);
+  const handleFromCurrencyChange = (currency: string) => {
+    setFromCurrency(currency);
   };
 
-  const handleToCurrencyChange = (e) => {
-    setToCurrency(e.target.value);
+  const handleToCurrencyChange = (currency: string) => {
+    setToCurrency(currency);
   };
 
   useEffect(() => {
@@ -57,7 +60,7 @@ const CurrencyConverter = () => {
   return (
     <div className={styles['card']}>
       <form onSubmit={convertCurrency}>
-        <div>
+        <section className={styles['input-block']}>
           <label>
             Amount:
             <input
@@ -66,52 +69,43 @@ const CurrencyConverter = () => {
               onChange={handleAmountChange}
             />
           </label>
-        </div>
+        </section>
 
-        <div>
-          <label>
-            From:
-            <select value={fromCurrency} onChange={handleFromCurrencyChange}>
-              {currencies.map(currency => (
-                <option key={currency.currency} value={currency.currency}>
-                  {currency.currency}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
+        <section className={styles['swap-block']}>
+          <Dropdown
+            label="From:"
+            value={fromCurrency}
+            options={currencies}
+            onChange={handleFromCurrencyChange}
+          />
 
-        <div>
-          <label>
-            To:
-            <select value={toCurrency} onChange={handleToCurrencyChange}>
-              {currencies.map(currency => (
-                <option key={currency.currency} value={currency.currency}>
-                  {currency.currency}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
+          <img src={swapIcon} className={styles['swap-icon']} alt="Swap Icon"/>
 
-        <div>
-          {convertedAmount > 0 && (<span>You will receive: {convertedAmount.toFixed(2)} {toCurrency}</span>)}
-        </div>
+          <Dropdown
+            label="To:"
+            value={toCurrency}
+            options={currencies}
+            onChange={handleToCurrencyChange}
+          />
+        </section>
+
+        <section className={styles['result-block']}>
+          <span>You will receive: {convertedAmount ? convertedAmount : '...'} {toCurrency}</span>
+        </section>
 
         <button type="submit" disabled={loading}>
           {loading ? 'Converting...' : 'Convert'}
         </button>
 
         {loading && (
-          <div className={styles.spinner}>
-            {/* Replace with your spinner component or animation */}
+          <div className={styles['spinner']}>
             <span>Loading...</span>
           </div>
         )}
       </form>
 
       {showModal && (
-        <Modal onClose={closeModal} />
+        <Modal onClose={closeModal}/>
       )}
     </div>
   );
